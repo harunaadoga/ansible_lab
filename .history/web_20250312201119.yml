@@ -17,18 +17,12 @@
         - git
         - vim
       state: latest
-    when: ansible_distribution in ["Rocky", "RedHat"]
+    when: ansible_distribution == "RedHat"
 
   - name: Enable web server
     service:
       name: httpd
       enabled: yes
-  
-  - name: Start web server
-    service:
-      name: httpd
-      state: started 
-      
   
 
 

@@ -24,11 +24,5 @@
       name: httpd
       enabled: yes
   
-  - name: Start web server
-    service:
-      name: httpd
-      state: started 
-      
-  
 
 
