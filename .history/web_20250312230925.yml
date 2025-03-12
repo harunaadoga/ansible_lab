@@ -34,7 +34,6 @@
     dnf:
       name: 
         - tuned
-        - ethtool
       state: latest 
   - name: enable and start tuned
     service:

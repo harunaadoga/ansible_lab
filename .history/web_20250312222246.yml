@@ -1,5 +1,5 @@
 ---
-- hosts: prod
+- hosts: dev
   become: yes
   pre_tasks:
   
@@ -25,23 +25,15 @@
       enabled: yes
       state: started
 
-# target prod servers 
-- hosts: dev
+
+- hosts: prod
   become: yes
   tasks:
 
   - name: install tuned 
     dnf:
-      name: 
-        - tuned
-        - ethtool
-      state: latest 
-  - name: enable and start tuned
-    service:
-          name: tuned 
-          enabled: yes 
-          state: started
-
+      name: tuned
+      state: present 
 
 
 
