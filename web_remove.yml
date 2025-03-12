@@ -1,0 +1,12 @@
+---
+- hosts: prod
+  become: yes
+  tasks:
+
+  - name: Remove packages
+    dnf:
+      name:
+        - httpd
+        - autofs
+        - nfs-utils
+      state: absent

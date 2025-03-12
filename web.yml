@@ -1,40 +1,27 @@
 ---
-
-- hosts: dev
-  become: true
+- hosts: prod
+  become: yes
   tasks:
   
-  - name: update RHEL packages
+  - name: Update all packages
     dnf:
-      name: '*'
+      name: "*"
       state: latest
-    when: ansible_distribution == 'RedHat'
 
-  - name: update all packages 
-    apt:
-      update_cache: yes
-    when: ansible_distribution == 'Ubuntu'
-
-  - name: install apache2
-    apt:
-      name: apache2
-      state: latest
-    when: ansible_distribution == 'Ubuntu'
-
-  - name: start apache2
-    service:
-      name: apache2
-      state: started
-    when: ansible_distribution == 'Ubuntu'
-  - name: install httpd
+  - name: Install needed packages
     dnf:
-      name: httpd
+      name:
+        - httpd
+        - nfs-utils
+        - autofs
+        - git
+        - vim
       state: latest
-    when: ansible_distribution == 'RedHat'
+    when: ansible_distribution == "RedHat"
 
-  - name: start httpd
+  - name: Enable web server
     service:
       name: httpd
-      state: started
-    when: ansible_distribution == 'RedHat'
-  
+      enabled: yes
+
+
