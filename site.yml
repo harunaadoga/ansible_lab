@@ -1,0 +1,71 @@
+---
+
+#target login nodes
+- hosts: login
+  become: yes
+  pre_tasks:
+  
+  - name: Update all packages
+    dnf:
+      name: "*"
+      state: latest
+
+  - name: Install needed packages
+    dnf:
+      name:
+        - httpd
+        - git
+        - vim
+        - postfix
+      state: latest
+    when: ansible_distribution in ["Rocky", "RedHat"]
+
+  - name: Enable web server and start
+    service:
+      name: httpd
+      enabled: yes
+      state: started
+
+
+# target compute  servers 
+- hosts: compute
+  become: yes
+  tasks:
+
+  - name: install tuned 
+    dnf:
+      name: 
+        - tuned
+        - ethtool
+      state: latest 
+  - name: enable and start tuned
+    service:
+          name: tuned 
+          enabled: yes 
+          state: started
+
+
+#target storage servers
+
+- hosts: storage
+  become: yes
+  tasks:
+
+  - name: Install nfs and conainers 
+    dnf:
+      name:
+        - nfs-utils
+        - autofs
+        - container-tools
+      state: latest
+
+  - name: Enable and start podman 
+    service:
+      name: podman
+      enabled: yes
+      state: started
+        
+
+
+
+
