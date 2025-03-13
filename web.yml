@@ -25,7 +25,7 @@
       enabled: yes
       state: started
 
-# target prod servers 
+# target dev servers 
 - hosts: dev
   become: yes
   tasks:
