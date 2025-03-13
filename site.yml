@@ -6,11 +6,13 @@
   pre_tasks:
   
   - name: Update all packages
+    tags: always
     dnf:
       name: "*"
       state: latest
 
-  - name: Install needed packages
+  - name: Install httpd, git, vim and postfix  packages
+    tags: httpd,git,postfix
     dnf:
       name:
         - httpd
@@ -33,6 +35,7 @@
   tasks:
 
   - name: install tuned 
+    tags: tuned,ethtool
     dnf:
       name: 
         - tuned
@@ -46,12 +49,12 @@
 
 
 #target storage servers
-
 - hosts: storage
   become: yes
   tasks:
 
-  - name: Install nfs and conainers 
+  - name: Install nfs,samba,autofs and conainers 
+    tags: autofs,samba,nfs
     dnf:
       name:
         - nfs-utils
