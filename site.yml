@@ -72,8 +72,8 @@
           state: started
 
 
-#target storage servers
-- hosts: storage
+#target storage/all servers
+- hosts: all
   become: yes
   tasks:
 
@@ -93,6 +93,12 @@
       enabled: yes
       state: started
         
+  - name: create hadoga user
+    tags: always
+    user:
+      name: hadoga
+      group: root 
+    
 
 #Target workstation
 - hosts: workstations
