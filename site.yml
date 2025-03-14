@@ -21,15 +21,21 @@
         - postfix
       state: latest
     when: ansible_distribution in ["Rocky", "RedHat"]
-
-
-
+  
   - name: Enable web server and start
     service:
       name: httpd
       enabled: yes
       state: started
 
+  - name: Change default httpd port to 66
+    tags: httpd,port
+    lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: "^Listen"
+      line: Listen 66
+    register: http_port
+  
   - name: copy web files to server 
     tags: httpd, copy
     copy:
@@ -39,13 +45,18 @@
       group: root
       mode: 0644
 
+  - name: restart httpd
+    tags: httpd
+    service: 
+      name: httpd
+      state: restarted
+    when: http_port.changed
 
 
 # target compute  servers 
 - hosts: compute
   become: yes
   tasks:
-
   - name: install tuned 
     tags: tuned,ethtool
     dnf:
@@ -53,6 +64,7 @@
         - tuned
         - ethtool
       state: latest 
+ 
   - name: enable and start tuned
     service:
           name: tuned 
@@ -81,6 +93,9 @@
       enabled: yes
       state: started
         
+
+
+
 
 #Target workstation
 - hosts: workstations
