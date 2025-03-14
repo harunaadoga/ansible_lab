@@ -94,9 +94,6 @@
       state: started
         
 
-
-
-
 #Target workstation
 - hosts: workstations
   tags: terraform
