@@ -9,4 +9,8 @@
         - httpd
         - autofs
         - nfs-utils
+        - terraform
+        - tuned
+        - container-tools
+        - samba
       state: absent

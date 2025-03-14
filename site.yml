@@ -98,7 +98,22 @@
     user:
       name: hadoga
       group: root 
-    
+  
+  - name: add sssh key for hadoga
+    tags: always
+    authorized_key:
+      user: hadoga
+      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD1oOHGfXE5bEKIGZLgzcfjfs8lD7dDULfuAh5qaiyM2sR3QhRrzh5SIwUMC7oimtzV9+si4gCfqsPFlb8zJZBVhWOuJ928/r6r7EqtzfOijyuPZMduLbz0IG8jGwx8xFfwWoZzm4g6G1SHGiW5OM+ja/iLIAYo/ViORWvbbFLWVIjwDK7+eaevOH2TRpMpnLEufSvZxPwTy5kSmdEVO1Ua0ClLUw0b/8FYcHH1Nd0pUX2o7juafDq8RKTmuQOp8BmsHwsWSZi2Uz1647BmcFLyKQcJFO3/vIMcT3+DkCYdgrJh0yg24trwtyPzFVA2mCj9RkP2qi4AW5B2QaZvDZB4S/FI2OYPPGep7AkWwV7rlx14cXjcyTZybOLB9xyCYm/Ov2bIO3L882zKLQ827/5h121HnmR7Porb3sSjOWzBY40pW+v84eaS74SMKBOhAC6cQ8cD/H3hLbD/G5scXmsGSkbBmM7ixBLiER3UoDcJO6jnl7CS2hqX0DCKGs1qxaUYiZVQLCJ2lTy2YSZCU/A7iGbtCaXK5rRwml7FQmNJRfQ0BfkYLmLpyQ+To9fb6I76rxHl/3+5n8ghgPaCChJ++8Gke03CqEKA4sc8Pacq/H7Gt1hrOIrj0QTUuhiY+dPWfXmHikRwzy68yjLCz1PEvn5AI1HbfVS64jO+VjwO3Q== ha535@GVJGH9252G"
+
+  - name: copy sudoer file
+    tags: always
+    ansible.builtin.copy:
+      src: sudoer_hadoga
+      dest: /etc/sudoers.d/hadoga
+      owner: root
+      group: root
+      mode: 0440
+      
 
 #Target workstation
 - hosts: workstations
@@ -117,6 +132,8 @@
       mode: 0755
       owner: root
       group: root
+
+
 
 
 
