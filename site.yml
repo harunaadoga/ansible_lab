@@ -1,131 +1,42 @@
 ---
-
-#target login nodes
-- hosts: login
-  become: yes
+- hosts: all
+  become: true
   pre_tasks:
-  
-  - name: Update all packages
+
+  - name: update all RedHat/Rocky repo
     tags: always
-    dnf:
+    dnf: 
       name: "*"
       state: latest
-    changed_when: false
+    when: ansible_distribution in "RedHat,Rocky"
 
-  - name: Install httpd, git, vim and postfix  packages
-    tags: httpd,git,postfix
-    dnf:
-      name:
-        - httpd
-        - git
-        - vim
-        - postfix
-      state: latest
-    when: ansible_distribution in ["Rocky", "RedHat"]
-  
-  - name: Enable web server and start
-    service:
-      name: httpd
-      enabled: yes
-      state: started
-
-  - name: Change default httpd port to 66
-    tags: httpd,port
-    lineinfile:
-      path: /etc/httpd/conf/httpd.conf
-      regexp: "^Listen"
-      line: Listen 66
-    register: http_port
-  
-  - name: copy web files to server 
-    tags: httpd, copy
-    copy:
-      src: default_site.html
-      dest: /var/www/html/index.html
-      owner: root
-      group: root
-      mode: 0644
-
-  - name: restart httpd
-    tags: httpd
-    service: 
-      name: httpd
-      state: restarted
-    when: http_port.changed
-
-
-# target compute  servers 
-- hosts: compute
-  become: yes
-  tasks:
-  - name: install tuned 
-    tags: tuned,ethtool
-    dnf:
-      name: 
-        - tuned
-        - ethtool
-      state: latest 
- 
-  - name: enable and start tuned
-    service:
-          name: tuned 
-          enabled: yes 
-          state: started
-
-
-#target storage/all servers
-- hosts: all
-  become: yes
-  tasks:
-
-  - name: Install nfs,samba,autofs and conainers 
-    tags: autofs,samba,nfs
-    dnf:
-      name:
-        - nfs-utils
-        - samba
-        - autofs
-        - container-tools
-      state: latest
-
-  - name: Enable and start podman 
-    service:
-      name: podman
-      enabled: yes
-      state: started
-        
-
-  - name: add sssh key for hadoga
+  - name: update all Ubuntu packages
     tags: always
-    authorized_key:
-      user: hadoga
-      key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQD1oOHGfXE5bEKIGZLgzcfjfs8lD7dDULfuAh5qaiyM2sR3QhRrzh5SIwUMC7oimtzV9+si4gCfqsPFlb8zJZBVhWOuJ928/r6r7EqtzfOijyuPZMduLbz0IG8jGwx8xFfwWoZzm4g6G1SHGiW5OM+ja/iLIAYo/ViORWvbbFLWVIjwDK7+eaevOH2TRpMpnLEufSvZxPwTy5kSmdEVO1Ua0ClLUw0b/8FYcHH1Nd0pUX2o7juafDq8RKTmuQOp8BmsHwsWSZi2Uz1647BmcFLyKQcJFO3/vIMcT3+DkCYdgrJh0yg24trwtyPzFVA2mCj9RkP2qi4AW5B2QaZvDZB4S/FI2OYPPGep7AkWwV7rlx14cXjcyTZybOLB9xyCYm/Ov2bIO3L882zKLQ827/5h121HnmR7Porb3sSjOWzBY40pW+v84eaS74SMKBOhAC6cQ8cD/H3hLbD/G5scXmsGSkbBmM7ixBLiER3UoDcJO6jnl7CS2hqX0DCKGs1qxaUYiZVQLCJ2lTy2YSZCU/A7iGbtCaXK5rRwml7FQmNJRfQ0BfkYLmLpyQ+To9fb6I76rxHl/3+5n8ghgPaCChJ++8Gke03CqEKA4sc8Pacq/H7Gt1hrOIrj0QTUuhiY+dPWfXmHikRwzy68yjLCz1PEvn5AI1HbfVS64jO+VjwO3Q== ha535@GVJGH9252G"
+    apt:
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Ubuntu"
 
+- hosts: all
+  become: true
+  roles:
+    - base
+- hosts: storage_servers
+  become: true
+  roles:
+    - storage_servers
 
+- hosts: web_servers
+  become: true
+  roles:
+    - web_servers
 
-#Target workstation
+- hosts: compute_servers
+  become: true
+  roles:
+    - compute_servers
 - hosts: workstations
-  tags: terraform
-  tasks:
-
-  - name: install unzip
-    package:
-      name: unzip
-      state: latest
-
-  - name: install terraform
-    unarchive:
-      src: https://releases.hashicorp.com/terraform/0.12.28/terraform_0.12.28_linux_amd64.zip
-      dest: /usr/local/bin
-      remote_src: yes
-      mode: 0755
-      owner: root
-      group: root
-
-
-
-
-
-
-
-
+  become: true
+  roles:
+    - workstations
+    

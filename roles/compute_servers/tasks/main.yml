@@ -1,0 +1,10 @@
+- name: install tuned 
+  tags: tuned,ethtool
+  dnf:
+    name: 
+        - tuned
+        - ethtool
+        - autofs
+        - rsync
+    state: latest 
+ 

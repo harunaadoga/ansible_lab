@@ -1,0 +1,8 @@
+- name: Install nfs,samba,autofs and conainers 
+  tags: autofs,samba,nfs
+  dnf:
+    name:
+       - nfs-utils
+       - samba
+       - container-tools
+    state: latest

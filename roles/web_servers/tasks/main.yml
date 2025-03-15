@@ -1,0 +1,42 @@
+- name: Install httpd, git, vim and postfix  packages
+  tags: httpd,git,postfix
+  dnf:
+    name:
+       - httpd
+       - git
+       - vim
+       - postfix
+    state: latest
+  when: ansible_distribution in ["Rocky", "RedHat"]
+  
+- name: Enable web server and start
+  service:
+    name: httpd
+    enabled: yes
+    state: started
+
+- name: Change default httpd port to 66
+  tags: httpd,port
+  lineinfile:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: "^Listen"
+      line: Listen 66
+  register: http_port
+  
+- name: copy web files to server 
+  tags: httpd, copy
+  copy:
+      src: default_site.html
+      dest: /var/www/html/index.html
+      owner: root
+      group: root
+      mode: 0644
+
+- name: restart httpd
+  tags: httpd
+  service: 
+      name: httpd
+      state: restarted
+  when: http_port.changed
+
+
