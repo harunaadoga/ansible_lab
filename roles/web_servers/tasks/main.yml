@@ -1,27 +1,29 @@
-- name: Install httpd, git, vim and postfix  packages
-  tags: httpd,git,postfix
+- name: Install httpd and php  packages
+  tags: httpd,php
   dnf:
     name:
-       - httpd
-       - git
-       - vim
-       - postfix
+       - "{{ web_package_name }}"
+       - "{{ php_package_name }}"
     state: latest
   when: ansible_distribution in ["Rocky", "RedHat"]
   
-- name: Enable web server and start
-  service:
-    name: httpd
-    enabled: yes
-    state: started
-
-- name: Change default httpd port to 66
+- name: Change default httpd port 80 to 88 TCP
   tags: httpd,port
   lineinfile:
       path: /etc/httpd/conf/httpd.conf
       regexp: "^Listen"
-      line: Listen 66
-  register: http_port
+      line: Listen 88
+  notify: restart_httpd
+
+- name: Add new httpd port to SELINUX and notify handler to restart httpd
+  shell:
+    cmd: semanage port -a -t http_port_t -p tcp 88
+  notify: restart_httpd
+
+- name: Add TCP port 88 to the firewalld 
+  shell:
+    cmd: firewall-cmd --add-port 88/tcp --permanent; firewall-cmd --reload 
+  notify: restart_httpd 
   
 - name: copy web files to server 
   tags: httpd, copy
@@ -31,12 +33,4 @@
       owner: root
       group: root
       mode: 0644
-
-- name: restart httpd
-  tags: httpd
-  service: 
-      name: httpd
-      state: restarted
-  when: http_port.changed
-
 

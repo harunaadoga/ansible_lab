@@ -1,0 +1,4 @@
+web_package_name: httpd
+web_service: httpd
+php_package_name: php
+
