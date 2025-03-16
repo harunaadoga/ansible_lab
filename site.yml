@@ -37,3 +37,8 @@
   become: true
   roles:
     - workstations
+
+- hosts: databases
+  become: true
+  roles:
+    - databases

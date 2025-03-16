@@ -1,0 +1,5 @@
+- name: start_mariadb
+  service:
+    name: "{{ db_service }}"
+    enabled: yes 
+    state: started

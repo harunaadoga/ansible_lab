@@ -1,0 +1,6 @@
+- name: Install Mariadb
+  dnf:
+    name: 
+      - "{{ db_server }}"
+    state: latest 
+  notify: start_mariadb

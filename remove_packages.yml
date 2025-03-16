@@ -11,5 +11,8 @@
         - nfs-utils
         - tuned
         - container-tools
+        - vim
         - samba
+        - mariadb
+        - mariadb-server
       state: absent
