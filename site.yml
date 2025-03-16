@@ -17,6 +17,7 @@
     changed_when: false
     when: ansible_distribution == "Ubuntu"
 
+
 - hosts: all
   become: true
   roles:
@@ -31,12 +32,7 @@
   roles:
     - web_servers
 
-- hosts: compute_servers
-  become: true
-  roles:
-    - compute_servers
 - hosts: workstations
   become: true
   roles:
     - workstations
-    

@@ -3,3 +3,10 @@
     name: "{{ web_service }}"
     enabled: yes
     state: restarted
+
+- name: restart_sshd
+  service:
+    name: sshd
+    enabled: yes 
+    state: restarted
+    

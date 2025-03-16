@@ -1,4 +1,9 @@
 web_package_name: httpd
 web_service: httpd
 php_package_name: php
+ssh_users: "student hadoga"
+ssh_template_file: sshd_config_redhat.j2
+tuned_service: tuned
+autofs_service: autofs 
+
 
