@@ -5,5 +5,6 @@ ssh_users: "student hadoga"
 ssh_template_file: sshd_config_redhat.j2
 tuned_service: tuned
 autofs_service: autofs 
+nfs_service: nfs-server 
 
 

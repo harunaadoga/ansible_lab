@@ -6,3 +6,4 @@
        - samba
        - container-tools
     state: latest
+  notify: restart_nfs 
