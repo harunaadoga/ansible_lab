@@ -3,3 +3,15 @@
     name: "{{ nfs_service }}"
     enabled: yes 
     state: restarted 
+
+- name: start_podman
+  service:
+    name: "{{ container_service }}"
+    state: started
+    enabled: yes 
+
+- name: start_samba
+  service: 
+    name: "{{ samba_service }}"
+    state: started
+    enabled: yes

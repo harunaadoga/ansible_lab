@@ -3,4 +3,5 @@
     name: 
       - "{{ db_server }}"
     state: latest 
-  notify: start_mariadb
+  notify: 
+    - start_mariadb

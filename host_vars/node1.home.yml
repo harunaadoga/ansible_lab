@@ -7,6 +7,8 @@ tuned_service: tuned
 autofs_service: autofs 
 nfs_service: nfs-server
 db_server: mariadb-server
-db_service: mariadb 
+db_service: mariadb
+container_service: podman
+samba_service: samba 
 
 

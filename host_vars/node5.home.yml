@@ -8,3 +8,5 @@ autofs_service: autofs
 nfs_service: nfs-server 
 db_service: mariadb 
 db_server: mariadb-server
+container_service: podman
+samba_service: samba 

@@ -6,4 +6,8 @@
        - samba
        - container-tools
     state: latest
-  notify: restart_nfs 
+  notify:
+    - restart_nfs 
+    - start_podman
+    - start_samba
+ 
