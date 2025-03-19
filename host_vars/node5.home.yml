@@ -9,4 +9,6 @@ nfs_service: nfs-server
 db_service: mariadb 
 db_server: mariadb-server
 container_service: podman
-samba_service: samba 
+samba_service: samba
+ntp_service: chronyd
+ntp_server: chrony

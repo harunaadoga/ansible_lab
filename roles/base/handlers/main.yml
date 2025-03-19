@@ -1,5 +1,22 @@
+
+- name: Check chrony sources
+  command: chronyc sources
+  changed_when: false 
+
+
 - name: restart_sshd
   service:
     name: sshd
     state: restarted
-    
+
+- name: clean dnf cache
+  command: dnf clean all
+  changed_when: false
+
+- name: make cache
+  command: dnf makecache
+  changed_when: false
+
+- name: update packages 
+  command: dnf update -y
+  changed_when: false

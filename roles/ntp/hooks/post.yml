@@ -1,0 +1,4 @@
+- name: Ensure chrony is restarted
+  service:
+      name: "{{ ntp_service }}"
+      state: restarted

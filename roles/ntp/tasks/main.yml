@@ -1,0 +1,11 @@
+- name: Install chrony time service
+  tags: ntp
+  dnf:
+    name: "{{ ntp_server }}"
+    state: latest
+
+- name: Import pre-hook for ntp
+  import_tasks: roles/ntp/hooks/pre.yml
+
+- name: Import post-hook for ntp 
+  import_tasks: roles/ntp/hooks/post.yml

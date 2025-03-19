@@ -10,5 +10,6 @@ db_server: mariadb-server
 db_service: mariadb
 container_service: podman
 samba_service: samba 
-
+ntp_service: chronyd
+ntp_server: chrony
 

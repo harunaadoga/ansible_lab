@@ -3,6 +3,14 @@
   become: true
   pre_tasks:
 
+  - name: Enable ntp synchronisation 
+    command: timedatectl set-ntp true
+    changed_when: false 
+
+  - name: Set system timezone to Europe/London
+    command: timedatectl set-timezone Europe/London
+    changed_when: false
+
   - name: update all RedHat/Rocky repo
     tags: always
     dnf: 
@@ -18,11 +26,11 @@
     changed_when: false
     when: ansible_distribution == "Ubuntu"
 
-
 - hosts: all
   become: true
   roles:
     - base
+    - ntp
 - hosts: storage_servers
   become: true
   roles:
@@ -42,10 +50,4 @@
   become: true
   roles:
     - databases
-
-#- name: Import pre-hook 
-#  import_playbook: roles/web_servers/hooks/pre.yml 
-
-#- name: Imort post-hook
-#  import_playbook: roles/web_servers/hooks/post.yml 
 
