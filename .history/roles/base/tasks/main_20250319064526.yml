@@ -13,8 +13,3 @@
     group: root
     mode: 0644
   notify: restart_sshd
-
-- name: create password for user hadoga
-  tags: pass
-  shell:
-      cmd: "echo password123 | passwd --stdin hadoga"
