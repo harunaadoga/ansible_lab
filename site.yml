@@ -42,3 +42,10 @@
   become: true
   roles:
     - databases
+
+#- name: Import pre-hook 
+#  import_playbook: roles/web_servers/hooks/pre.yml 
+
+#- name: Imort post-hook
+#  import_playbook: roles/web_servers/hooks/post.yml 
+

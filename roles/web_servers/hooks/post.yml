@@ -1,0 +1,7 @@
+- name: Post-hook - Restart httpd after role execution
+  hosts: all
+  tasks:
+    - name: Restart httpd
+      service: 
+        name: "{{ web_service }}"
+        state: restarted 
