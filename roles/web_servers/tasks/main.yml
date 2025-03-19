@@ -34,3 +34,8 @@
       group: root
       mode: 0644
 
+- name: Import pre-hook 
+  import_tasks: roles/web_servers/hooks/pre.yml 
+
+- name: Imort post-hook
+  import_tasks: roles/web_servers/hooks/post.yml 

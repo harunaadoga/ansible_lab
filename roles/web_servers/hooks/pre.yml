@@ -1,7 +1,4 @@
-- name: Pre-hook - check if httpd is installed
-  hosts: all
-  tasks:
-    - name: Ensure httpd is installed before proceeding
-      command: which httpd
-      register: httpd_installed
-      failed_when: httpd_installed.rc != 0
+- name: Ensure httpd is installed before proceeding
+  command: which httpd
+  register: httpd_installed
+  failed_when: httpd_installed.rc != 0
