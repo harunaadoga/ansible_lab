@@ -1,0 +1,49 @@
+---
+- hosts: prod
+  become: yes
+  pre_tasks:
+  
+  - name: Update all packages
+    dnf:
+      name: "*"
+      state: latest
+
+  - name: Install needed packages
+    dnf:
+      name:
+        - httpd
+        - nfs-utils
+        - autofs
+        - git
+        - vim
+      state: latest
+    when: ansible_distribution in ["Rocky", "RedHat"]
+
+  - name: Enable web server and start
+    service:
+      name: httpd
+      enabled: yes
+      state: started
+
+# target dev servers 
+- hosts: dev
+  become: yes
+  tasks:
+
+  - name: install tuned 
+    dnf:
+      name: 
+        - tuned
+        - ethtool
+      state: latest 
+  - name: enable and start tuned
+    service:
+          name: tuned 
+          enabled: yes 
+          state: started
+
+
+
+
+
+
