@@ -15,4 +15,5 @@
         - samba
         - mariadb
         - mariadb-server
+        - chrony
       state: absent
