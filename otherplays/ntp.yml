@@ -8,6 +8,7 @@
         name: chrony
         state: present
     
+    
     - name: Ensure chrony is enabled and started
       service:
         name: chronyd
