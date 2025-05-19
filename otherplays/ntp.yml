@@ -4,12 +4,11 @@
   hosts: all
   tasks:
     - name: Install NTP server/service
-        dnf:
-          name: chrony
-          state: installed
-
-    - tasks:
-      name: Start NTP service
       dnf:
         name: chrony
+        state: installed
+
+    - name: Make sure the chronyd service is started if not already
+      service:
+        name: chronyd
         state: started 
