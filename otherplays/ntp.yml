@@ -1,16 +1,15 @@
 ---
-- name: NTP checks
-  hosts: all
+- name: Install and start ntp on all servers
   become: yes
-  tasks: 
-    - name: Ensure chrony is installed
+  hosts: all
+  tasks:
+    - name: Install NTP server/service
+        dnf:
+          name: chrony
+          state: installed
+
+    - tasks:
+      name: Start NTP service
       dnf:
         name: chrony
-        state: present
-    
-    
-    - name: Ensure chrony is enabled and started
-      service:
-        name: chronyd
-        enabled: yes 
-        state: started
+        state: started 
