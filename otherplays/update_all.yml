@@ -1,0 +1,15 @@
+---
+- name: Playbook to update all servers
+  hosts: all
+  become: yes
+  tasks:
+    
+    - name: Patch all RHEL servers
+      dnf:
+        name: "*"
+        state: latest
+        autoremove: no
+    - name: Install mariadb 
+      dnf:
+        name: mariadb
+        state: present
