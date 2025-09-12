@@ -9,7 +9,19 @@
         name: "*"
         state: latest
         autoremove: no
-    - name: Install mariadb 
+    
+    - name: Install mariadb client
       dnf:
         name: mariadb
         state: present
+    
+    - name: install mariabdb server
+      dnf:
+        name: mariadb-server
+        state: present
+    - name: Start mariabd
+      systemd_service:
+        name: mariadb
+        state: started
+        daemon_reload: true
+        enabled: yes
