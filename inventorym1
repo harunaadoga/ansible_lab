@@ -1,0 +1,12 @@
+[web_servers]
+rhel9.home.local
+host4.home.local
+
+[storage_servers]
+host1.home.local
+
+[workstations]
+host3.home.local
+
+[databases]
+host2.home.local
