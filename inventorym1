@@ -1,12 +1,26 @@
-[web_servers]
-rhel9.home.local
-host4.home.local
+#compute nodes
 
-[storage_servers]
+[compute]
+host4.home.local
+host2.home.local
+
+#storage nodes
+[storage]
 host1.home.local
 
-[workstations]
+#login nodes
+[login]
+rhel9.home.local
+
+#databases
+[db]
 host3.home.local
 
-[databases]
-host2.home.local
+#hpc cluster
+[hpc:children]
+storage
+db
+compute
+login
+db
+

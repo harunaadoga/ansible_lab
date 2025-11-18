@@ -1,0 +1,16 @@
+---
+- name: Play to Update All Infra Server
+  hosts: all
+  become: true
+  tasks:
+      - name: Use DNF module to update all servers
+        dnf:
+          name: "*"
+          state: latest
+      - name: Install net-tools on servers
+        dnf:
+          name: net-tools
+          state: present
+
+
+  
