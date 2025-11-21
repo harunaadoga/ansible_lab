@@ -24,6 +24,16 @@ compute
 login
 db
 
+#production servers 
+[prod]
+node1.home.local
+node2.home.local
+node3.home.local
+node4.home.local
+node5.home.local
+node6.home.local
+
+
 [all:vars]
 ansible_become_password=password
 ansible_user=root
