@@ -1,37 +1,50 @@
-#compute nodes
-
-[compute]
+#compute staging
+[compute-stg]
 host4.home.local
 host2.home.local
 
-#storage nodes
-[storage]
+#storage staging
+[storage-stg]
 host1.home.local
 
-#login nodes
-[login]
+#login staging
+[login-stg]
 rhel9.home.local
 
-#databases
-[db]
+#database staging
+[db-stg]
 host3.home.local
 
-#hpc cluster
-[hpc:children]
-storage
-db
+#staging hpc cluster
+[staging-hpc:children]
+storage-stg
+db-stg
+compute-stg
+login-stg
+
+
+#prod
+[compute]
+node1.home.local
+node2.home.local
+
+[storage]
+node3.home.local
+node4.home.local
+
+[login]
+node5.home.local
+
+[db]
+node6.home.local
+
+#prod hpc cluster
+[prod-hpc:children]
 compute
+storage
 login
 db
 
-#production servers 
-[prod]
-node1.home.local
-node2.home.local
-node3.home.local
-node4.home.local
-node5.home.local
-node6.home.local
 
 
 [all:vars]
