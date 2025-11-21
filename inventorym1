@@ -24,3 +24,6 @@ compute
 login
 db
 
+[all:vars]
+ansible_become_password=password
+ansible_user=root
