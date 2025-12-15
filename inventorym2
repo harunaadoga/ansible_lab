@@ -1,7 +1,7 @@
 #compute staging
 [compute-stg]
 host4.home.local
-host2.home.local
+host3.home.local
 
 #storage staging
 [storage-stg]
@@ -12,13 +12,13 @@ host1.home.local
 rhel9.home.local
 
 #database staging
-[db-stg]
-host3.home.local
+[web-stg]
+host2.home.local
 
 #staging hpc cluster
 [staging-hpc:children]
 storage-stg
-db-stg
+web-stg
 compute-stg
 login-stg
 
@@ -26,7 +26,7 @@ login-stg
 #prod
 [compute]
 node1.home.local
-node2.home.local
+node3.home.local
 
 [storage]
 node3.home.local

@@ -1,0 +1,71 @@
+---
+- hosts: all
+  name: Build A NodeJS Application on RHEL9
+  become: true
+  vars:
+    node_apps_location: /usr/local/opt/node
+
+  tasks:
+    - name: Install EPEL from Fedora
+      ansible.builtin.dnf:
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
+        state: present
+    
+    - name: Import GPG Key
+      ansible.builtin.rpm_key: 
+        key: "https://rpms.remirepo.net/RPM-GPG-KEY-remi2018"
+        state: present 
+
+    - name: Install Remi Repo
+      ansible.builtin.dnf:
+        name: "https://rpms.remirepo.net/enterprise/remi-release-9.rpm"
+        state: present
+
+    - name: Ensure Firewalld is stopped
+      ansible.builtin.service:
+        name: firewalld
+        state: stopped
+    - name: Remove httpd, for testing
+      ansible.builtin.dnf:
+        name: httpd
+        state: absent
+
+    - name: Install node.js and npm
+      ansible.builtin.dnf:
+        name: 
+           - npm
+           - nodejs
+        enablerepo: remi,epel
+        state: present
+
+    - name: Update Path so Ansible finds NPM
+      ansible.builtin.set_fact:
+        ansible_env: "{{ {'PATH': '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin'} }}"
+
+    - name: Install forever using npm directly (to run our Node.js app)
+      ansible.builtin.shell:
+        cmd: /usr/bin/npm install -g forever
+      check_mode: false
+
+    - name: Ensure Node.js app forder exists.
+      ansible.builtin.file:
+        path: "{{ node_apps_location}}"
+        state: directory
+
+    - name: Copy example Node.js app to server
+      ansible.builtin.copy:
+        src: app
+        dest: "{{ node_apps_location }}"
+
+    - name: Install app dependencies defiend in package.json
+      npm:
+        path: "{{ node_apps_location }}/app"
+
+    - name: Check list of running Node.js apps.
+      ansible.builtin.command: /usr/local/bin/forever list
+      register: forever_list
+      changed_when: false
+
+    - name: State example Node.js app.
+      ansible.builtin.command: "/usr/local/bin/forever start {{ node_apps_location }}/app/app.js"
+      when: "forever_list.stdout.find(node_apps_location + '/app/app.js') == -1"
