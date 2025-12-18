@@ -6,17 +6,27 @@
     - vars.yml
 
   pre_tasks:
-    - name: Update dnf cach if needed.
+    - name: Update dnf cache if needed.
       ansible.builtin.dnf:
         name: "*"
         state: latest
+    
     - name: Install EPEL Repo from Fedora
       ansible.builtin.dnf:
         name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
         state: present
-    - name: Install remi repo
-      ansible.builtin.command:
-        cmd: "dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm"
+
+    - name: Import Remi GPG key
+      ansible.builtin.rpm_key:
+        key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
+        state: present
+
+
+    - name: Add remi repo for Php
+      ansible.builtin.dnf:
+        name: "https://rpms.remirepo.net/enterprise/remi-release-9.rpm"
+        state: present
+        disable_gpg_check: false
 
   handlers:
     - name: Restart Apache
@@ -30,3 +40,51 @@
         name:
           - python3-dnf
           - python3-pycurl
+
+    - name: Enable PHP 8.2 module
+      ansible.builtin.command:
+        cmd: dnf module reset php -y
+      changed_when: false
+
+    - name: Enable PHP 8.2 from Remi
+      ansible.builtin.command: dnf module enable php:remi-8.2 -y
+      changed_when: false
+
+    - name: Install Apache, MySQL, PHP, and dependencies
+      ansible.builtin.dnf:
+        state: present
+        name:
+          - acl
+          - git
+          - curl
+          - unzip
+          - sendmail
+          - apache2
+          - php8.2-common
+          - php8.2-cli
+          - php8.2-dev
+          - php8.2-gd
+          - php8.2-curl
+          - php8.2-opcache
+          - php8.2-xml
+          - php8.2-mbstring
+          - php8.2-pdo
+          - php8.2-mysql
+          - php8.2-apcu
+          - libpcre3-dev
+          - libapache2-mod-php8.2
+          - python3-mysqldb
+          - mysql-server
+
+    - name: Disable the firewall
+      ansible.builtin.service:
+        name: firewalld
+        state: stopped
+
+
+
+
+
+
+
+
