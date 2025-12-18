@@ -1,0 +1,32 @@
+---
+- hosts: web-stg
+  become: true
+
+  vars_files:
+    - vars.yml
+
+  pre_tasks:
+    - name: Update dnf cach if needed.
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+    - name: Install EPEL Repo from Fedora
+      ansible.builtin.dnf:
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
+        state: present
+    - name: Install remi repo
+      ansible.builtin.command:
+        cmd: "dnf install https://rpms.remirepo.net/enterprise/remi-release-9.rpm"
+
+  handlers:
+    - name: Restart Apache
+      ansible.builtin.service:
+        name: httpd
+        state: restarted
+
+  tasks:
+    - name: Get software for dnf repo management
+      ansible.builtin.dnf:
+        name:
+          - python3-dnf
+          - python3-pycurl
