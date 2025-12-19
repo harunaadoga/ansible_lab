@@ -29,7 +29,7 @@
         disable_gpg_check: false
 
   handlers:
-    - name: Restart Apache
+    - name: restart apache
       ansible.builtin.service:
         name: httpd
         state: restarted
@@ -81,6 +81,14 @@
         name: firewalld
         state: stopped
 
+    - name: Start Apache and mysql using with_items
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      with_items:
+        - apache2
+        - mysql
 
 
 
