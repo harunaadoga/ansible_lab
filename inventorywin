@@ -1,4 +1,4 @@
-[web_servers]
+[webservers]
 node1.home.local
 
 [storage]
