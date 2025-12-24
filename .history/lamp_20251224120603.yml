@@ -1,5 +1,5 @@
 
-- hosts: webservers
+- hosts: web-stg
   become: true
 
   vars_files:
@@ -11,19 +11,14 @@
         name: "*"
         state: latest
     
-    - name: Install EPEL Repo
+    - name: Install EPEL Repo from Fedora
       ansible.builtin.dnf:
-        name: epel-release
+        name: "https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm"
         state: present
 
     - name: Import Remi GPG key
       ansible.builtin.rpm_key:
         key: https://rpms.remirepo.net/RPM-GPG-KEY-remi2018
-        state: present
-
-    - name: Install httpd
-      ansible.builtin.dnf:
-        name: httpd
         state: present
 
 
@@ -34,7 +29,7 @@
         disable_gpg_check: false
 
   handlers:
-    - name: restart httpd
+    - name: restart apache
       ansible.builtin.service:
         name: httpd
         state: restarted
@@ -56,8 +51,11 @@
       changed_when: false
 
     - name: Remove Maria-db
-      ansible.builtin.shell:
-        cmd: dnf remove -y 'mariadb*' && dnf clean all
+      ansible.builtin.dnf:
+        name:
+          - mariadb
+          - mariadb-server
+        state: absent
 
     - name: Install Apache, MySQL, PHP, and dependencies
       ansible.builtin.dnf:
@@ -88,24 +86,17 @@
         name: firewalld
         state: stopped
 
-    - name: Start httpd and mysql using with_items
+    - name: Start Apache and mysql using with_items
       ansible.builtin.service:
         name: "{{ item }}"
         state: started
         enabled: yes
       with_items:
         - httpd
-        - mysqld
+        - mysql
 
     - name: Create mysql db
-<<<<<<< HEAD
-      community.mysql.mysql_db:
-        name: web_db
-        state: present
-=======
-    
 
->>>>>>> 8716899620dd3c40c8960552a3d3aa0cc2249f94
 
 
 
