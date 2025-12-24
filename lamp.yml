@@ -98,21 +98,6 @@
         - mysqld
 
     - name: Create mysql db
-<<<<<<< HEAD
-<<<<<<< HEAD
-      community.mysql.mysql_db:
-        name: web_db
-        state: present
-=======
-    
-=======
-      community.mysql.mysql_db:
-        name: web_db
-        state: present
-
->>>>>>> 5f442e6 (update mysql)
-
->>>>>>> 8716899620dd3c40c8960552a3d3aa0cc2249f94
 
 
 
