@@ -96,7 +96,6 @@
         - mysql
 
     - name: Create mysql db
-    
 
 
 
