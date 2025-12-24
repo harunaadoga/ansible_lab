@@ -31,7 +31,7 @@
       ansible.builtin.dnf:
         name: "https://rpms.remirepo.net/enterprise/remi-release-9.rpm"
         state: present
-        disable_gpg_check: false
+        disable_gpg_check: true
 
   handlers:
     - name: restart httpd
@@ -65,42 +65,32 @@
         name:
           - acl
           - git
-          - curl
           - unzip
           - sendmail
           - httpd
           - php-common
           - php-cli
           - php-gd
-          - php-curl
-          - php-opcache
-          - php-xml
-          - php-mbstring
-          - php-pdo
-          - php-mysqlnd
-          - php-pecl-apcu
-          - pcre2-devel
-          - python3-PyMySQL
           - mysql-server
 
-    - name: Disable the firewall
-      ansible.builtin.service:
-        name: firewalld
-        state: stopped
 
-    - name: Start httpd and mysql using with_items
-      ansible.builtin.service:
-        name: "{{ item }}"
-        state: started
-        enabled: yes
-      with_items:
-        - httpd
-        - mysqld
+    - name: Add httpd to firewall 
+      ansible.posix.firewalld:
+        service: http
+        permanent: true
+        state: enabled
+      notify: restart httpd
 
-    - name: Create mysql db
+    - name: reload the firewall
+      ansible.builtin.shell:
+        cmd: firewall-cmd --reload
+      notify: restart httpd
 
 
-
-
+    - name: Copy index.html file to web server
+      ansible.builtin.get_url:
+        url: https://harunaadoga.github.io/index.html
+        dest: /var/www/html/
+      notify: restart httpd
 
 
