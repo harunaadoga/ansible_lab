@@ -1,4 +1,4 @@
-
+---
 - hosts: webservers
   become: true
 
@@ -93,4 +93,31 @@
         dest: /var/www/html/
       notify: restart httpd
 
+- hosts: storage
+  become: true
+  vars_file:
+    - vars.yml
+  tags: storage nfs smb
+  
+  tasks:
 
+    - name: Install nfs and smb
+      ansible.builtin.dnf:
+        name: 
+          - nfs-utils
+          - samba
+        state: latest
+
+    - name: Ensure nfs and smb are started and enabled
+      ansible.builtin.service:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      with_items:
+        - smb
+        - nfs-server
+
+    - name: Add rpc-bind, mountd and nfs to firewalld
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        state:   
