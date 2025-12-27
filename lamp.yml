@@ -95,8 +95,6 @@
 
 - hosts: storage
   become: true
-  vars_file:
-    - vars.yml
   tags: storage nfs smb
   
   tasks:
@@ -113,11 +111,20 @@
         name: "{{ item }}"
         state: started
         enabled: yes
-      with_items:
+      loop:
         - smb
         - nfs-server
 
     - name: Add rpc-bind, mountd and nfs to firewalld
       ansible.posix.firewalld:
         service: "{{ item }}"
-        state:   
+        state: enabled
+        permanent: true
+      loop:
+        - rpc-bind
+        - mountd
+        - nfs
+
+    - name: Reload firewalld for changes to take effect
+      ansible.builtin.shell:
+        cmd: firewall-cmd --reload
