@@ -2,11 +2,11 @@
 node1.home.local
 
 [storage]
-node2.home.local
+node5.home.local
 
 [workstations]
 node3.home.local
 node4.home.local
 
 [compute]
-node5.home.local
+node2.home.local
