@@ -1,6 +1,11 @@
-# Ansible_Lab
+# Ansible_Lab_Playground
 
-DevOps infrastructure automation with Ansible.
-Linux System Administration.
+DevOps infrastructure automation.
+Linux system administration.
 CI/CD pipeline.
-HPC Infrastructure management.
+HPC infrastructure management.
+Storage management.
+Security automation.
+Application deployments.
+Networks management.
+
