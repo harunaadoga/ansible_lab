@@ -10,3 +10,6 @@ node4.home.local
 
 [compute]
 node2.home.local
+
+[debian]
+gida.home.local
