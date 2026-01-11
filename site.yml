@@ -1,5 +1,5 @@
 ---
-- hosts: webservers
+- hosts: all
   become: true
 
   vars_files:
@@ -74,6 +74,11 @@
           - mysql-server
 
 
+    - name: Make sure firewalld is enabled and running
+      ansible.builtin.shell:
+        cmd: systemctl start firewalld && systemctl enable firewalld
+        
+
     - name: Add httpd to firewall 
       ansible.posix.firewalld:
         service: http
@@ -87,7 +92,7 @@
       notify: restart httpd
 
 
-    - name: Copy index.html file to web server
+    - name: download/upload index.html file to web server
       ansible.builtin.get_url:
         url: https://harunaadoga.github.io/index.html
         dest: /var/www/html/
