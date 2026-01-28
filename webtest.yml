@@ -1,0 +1,28 @@
+---
+- name: Install and configure Apache
+  hosts: compute
+  become: true
+  
+  tasks:
+    - name: Update the server
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+
+    - name: Install httpd
+      ansible.builtin.dnf:
+        name: httpd
+        state: present
+
+    - name: Start httpd web service
+      ansible.builtin.service:
+
+    - name: Copy HTTP web files
+      ansible.builtin.copy:
+        src: /Users/haruna/Git-Repos/harunaadoga.github.io/index.html
+        dest: /var/www/html
+        mode: '0664'
+        owner: root
+        group: root 
+
+    - name: Add appache to the firewall
