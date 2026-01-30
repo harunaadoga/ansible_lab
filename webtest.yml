@@ -14,15 +14,22 @@
         name: httpd
         state: present
 
-    - name: Start httpd web service
+    - name: Start enable httpd web service
       ansible.builtin.service:
+        name: httpd
+        enabled: yes
 
     - name: Copy HTTP web files
       ansible.builtin.copy:
-        src: /Users/haruna/Git-Repos/harunaadoga.github.io/index.html
-        dest: /var/www/html
+        src: files/index.html
+        dest: /var/www/html/index.html
         mode: '0664'
         owner: root
         group: root 
 
     - name: Add appache to the firewall
+      ansible.posix.firewalld:
+        state: enabled
+        service: http
+        permanent: true
+        immediate: true
