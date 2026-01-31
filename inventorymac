@@ -9,7 +9,6 @@ host1.home.local
 
 #web staging
 [web-stg]
-host2.home.local
 host3.home.local
 
 #staging hpc cluster
